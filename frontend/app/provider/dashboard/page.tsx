@@ -31,6 +31,8 @@ export default function ProviderDashboard() {
         api.get("/api/bookings/provider"),
       ]);
 
+      console.log("SERVICES RESPONSE:", sRes.data);
+
       setServices(sRes.data.services ?? []);
       setBookings(bRes.data.bookings ?? []);
     } catch (error) {
@@ -288,7 +290,7 @@ function ServicesSection(props: any) {
                 </div>
 
                 <div className="flex gap-2 mt-3">
-                  <Link
+                  {/* <Link
                     href={`/services/${s._id}`}
                     className="px-3 py-1 border rounded-md text-sm"
                   >
@@ -300,7 +302,7 @@ function ServicesSection(props: any) {
                     className="px-3 py-1 border rounded-md text-sm"
                   >
                     Edit
-                  </Link>
+                  </Link> */}
 
                   <button
                     onClick={() => onDeleteService(s._id)}

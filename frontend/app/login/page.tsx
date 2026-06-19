@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import api from "@/utils/api";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+// import { useSearchParams  } from "next/navigation";
 import useAuth from "@/app/hooks/useAuth";
 
 export default function LoginPage() {
   const router = useRouter();
   const { login } = useAuth();
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
 
   const [form, setForm] = useState({
     emailOrUsername: "",
@@ -33,9 +36,11 @@ export default function LoginPage() {
       await login(token);
 
       // redirect based on role
-      if (user.role === "provider") {
+      if(redirect){
+        router.push(redirect);
+      }else if(user.role === "provider"){
         router.push("/provider/dashboard");
-      } else {
+      }else{
         router.push("/seeker/dashboard");
       }
     } catch (error: any) {

@@ -73,3 +73,31 @@ export const getServicesByCategory = async (req, res)=>{
         });
     }
 };
+
+// Get single service by ID
+export const getServiceById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const service = await Service.findById(id)
+            .populate("provider", "name email phone");
+
+        if (!service) {
+            return res.status(StatusCodes.NOT_FOUND).json({
+                message: "Service not found"
+            });
+        }
+
+        res.status(StatusCodes.OK).json({
+            message: "Service fetched successfully",
+            service,
+        });
+
+    } catch (error) {
+        console.error("Error in getServiceById:", error);
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message: "Server error",
+            error: error.message
+        });
+    }
+};

@@ -37,11 +37,20 @@ const Navbar = () => {
 
   // 🟢 Handle Profile Button Click
   const handleProfileClick = () => {
-    if (!user) {
-      router.push("/login");
-    } else {
-      router.push(`/profiles/${user.id}`);
-    }
+    if(!user){
+       router.push("/login");
+       return;
+    }else if(user.role === "provider"){
+        router.push("/provider/dashboard");
+      }else{
+        router.push("/seeker/dashboard");
+      }
+
+    // const userId = user._id || user.id;
+    // if( !userId){
+    //   console.error("User ID missing", user);
+    //   return;
+    // }
   };
 
   return (

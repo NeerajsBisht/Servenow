@@ -8,6 +8,7 @@ import Image from "next/image";
 // Provider Type
 interface Provider {
   _id: string;
+  id? :string;
   name: string;
   username: string;
   email: string;
@@ -23,14 +24,16 @@ export default function ProvidersPage() {
   const [loading, setLoading] = useState(true);
 
   // categories that match your seed file
-  const categories = ["Tutoring", "Household", "Medical", "Vehicle", "Other"];
+  // const categories = ["Tutoring", "Household", "Medical", "Vehicle", "Other"];
+  const categories = [...new Set(providers.map((p) => p.category))];
 
   // Fetch providers from backend
   useEffect(() => {
     const fetchProviders = async () => {
       try {
         const res = await api.get("/api/providers/list");
-        setProviders(res.data.providers || []);
+        console.log("API DATA:", res.data);
+        setProviders(res.data.providers || res.data.data || res.data || []);
       } catch (err) {
         console.error("Error fetching providers:", err);
       } finally {
@@ -58,7 +61,8 @@ export default function ProvidersPage() {
       {/* Section For Each Category */}
       {categories.map((category) => {
         const filtered = providers.filter(
-          (p) => p.category?.toLowerCase() === category.toLowerCase()
+         // (p) => p.category?.toLowerCase() === category.toLowerCase()
+         (p) => p.category === category
         );
 
         if (filtered.length === 0) return null;
@@ -71,15 +75,15 @@ export default function ProvidersPage() {
 
             {/* Provider Cards Grid */}
             <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-              {filtered.map((provider) => (
+              {filtered.map((provider, index) => (
                 <div
-                  key={provider._id}
+                  key={provider._id || provider.id || index}
                   className="bg-white rounded-2xl border shadow hover:shadow-lg transition p-5"
                 >
                   {/* Image */}
                   <div className="relative w-full h-40 mb-4">
                     <Image
-                      src={provider.profileImage ?? "/images/default-user.png"}
+                      src={provider.profileImage ?? "/images/default_user.png"}
                       alt={provider.name}
                       fill
                       className="object-cover rounded-xl"

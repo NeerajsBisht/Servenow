@@ -20,7 +20,7 @@ export default function ProviderDetailsPage() {
   const handleBookNow = () => {
     if (!user) {
       // Not logged in → redirect to login
-      router.push(`/login?redirect=/book/${id}`);
+      router.push(`/login?redirect=/services/${id}/book`);
     } else {
       // Logged in → go to booking page
       router.push(`/services/${id}/book`);
@@ -114,14 +114,14 @@ export default function ProviderDetailsPage() {
         </div>
 
         {/* Book Button */}
-        {/* <div className="mt-8">
+         <div className="mt-8">
           <button
             onClick={handleBookNow}
             className="block w-full bg-orange-600 hover:bg-orange-700 text-white py-3 text-lg rounded-xl transition"
           >
             Book Now
           </button>
-        </div> */}
+        </div> 
       </div>
     </div>
   );
